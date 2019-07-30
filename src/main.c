@@ -12,8 +12,9 @@
 #include "memory_layout.h"
 #include "registers.h"
 #include "sprites.h"
+#include "window.h"
 #include "display.h"
-#include "info_wins.h"
+#include "debug.h"
 
 const float CLOCK_SPEED = 500.0;
 const float CLOCK_PERIOD = ((1.0 * 1000.0)/ CLOCK_SPEED);
@@ -27,6 +28,10 @@ byte 	stack_pointer;
 word 	program_counter;
 byte 	sprites[DISPLAY_HEIGHT][DISPLAY_WIDTH];
 byte 	framebuffer[DISPLAY_HEIGHT * DISPLAY_WIDTH];
+WINDOW	*win;
+WINDOW	*display;
+WINDOW	*debug;
+WINDOW	*instructions;
 
 void startup();
 void shutdown();
@@ -34,6 +39,7 @@ void shutdown();
 void execute();
 
 void test_sprites();
+void test_collision();
 
 int main() {
 	startup();
@@ -43,7 +49,6 @@ int main() {
 	uint64_t cycle = 0;
 	int timer_tick = 0;
 	char c;
-	test_sprites();
 
 	while(1) {
 		clock_gettime(CLOCK_MONOTONIC_RAW, &end);
@@ -92,6 +97,11 @@ void startup() {
 	printf("setting sprites...\n");
 	setSprites();
 	printf("ready\n");
+	initWins();
+	displaySplash();
+	sleep(3);
+	clearDisplay();
+	refreshWins();
 }
 
 void shutdown() {
@@ -123,5 +133,30 @@ void test_sprites() {
 	setPixels(40, 8, 5, SPRITE_HEX_D);
 	setPixels(48, 8, 5, SPRITE_HEX_E);
 	setPixels(56, 8, 5, SPRITE_HEX_F);
-	printDisplay();
+	setDisplay();
+	refreshWins();
+}
+
+void test_collision() {
+	setPixels(0, 0, 5, SPRITE_HEX_8);
+	setPixels(3, 3, 5, SPRITE_HEX_8);
+	setDisplay();
+	if(VF == 1) {
+		setDebug("collide\n");
+	} else{
+		setDebug("no collide\n");
+	}
+	refreshWins();
+	sleep(2);
+	clearDisplay();
+
+	setPixels(0, 0, 5, SPRITE_HEX_8);
+	setPixels(12, 12, 5, SPRITE_HEX_8);
+	setDisplay();
+	if(VF == 1) {
+		setDebug("collide\n");
+	} else{
+		setDebug("no collide\n");
+	}
+	refreshWins();
 }
