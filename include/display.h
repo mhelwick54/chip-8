@@ -13,10 +13,9 @@
 #include "registers.h"
 #include "sprites.h"
 #include "window.h"
-#include "info_wins.h"
 
-#define PIXEL_WIDTH (64 + 2)
-#define PIXEL_HEIGHT (32 + 2)
+#define PIXEL_WIDTH 64
+#define PIXEL_HEIGHT 32
 
 #define DISPLAY_WIDTH PIXEL_WIDTH
 #define DISPLAY_HEIGHT (PIXEL_HEIGHT / BYTE_SIZE)
@@ -36,10 +35,9 @@
 extern byte sprites[DISPLAY_HEIGHT][DISPLAY_WIDTH];
 extern byte framebuffer[DISPLAY_HEIGHT * DISPLAY_WIDTH];
 
-void displayStart();
 void displaySplash();
 void setPixels(int x, int y, int height, word addr);
-void printDisplay();
+void setDisplay();
 void clearDisplay();
 
 #endif //DISPLAY_H
