@@ -6,22 +6,33 @@
 void usage();
 
 int main(int argc, char *argv[]) {
-	if(argc != 2) {
+	if(argc != 3) {
 		usage();
 		return -1;
 	}
 
-	FILE *fp = fopen(argv[1], "r");
-	if(!fp) {
+	printf("Opening files...");
+
+	FILE *in = fopen(argv[1], "r");
+	if(!in) {
+		printf("couldn't open file\n");
+		return -1;
+	}
+	FILE *out = fopen(argv[2], "w");
+	if(!out) {
 		printf("couldn't open file\n");
 		return -1;
 	}
 
-	compile(fp);
+	printf("success.\nCompiling...");
+
+	compile(in, out);
+
+	printf("success.\n");
 
 	return 0;
 }
 
 void usage() {
-	printf("usage: ./compile [source file]\n");
+	printf("usage: ./compile [source file] [output filename]\n");
 }

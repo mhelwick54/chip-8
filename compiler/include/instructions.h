@@ -11,7 +11,7 @@
 #define SE_R	0x5000
 #define LD_B	0x6000
 #define ADD_I	0x7000
-#define LD_R	0x8001
+#define LD_R	0x8000
 #define OR		0x8001
 #define AND		0x8002
 #define XOR		0x8003

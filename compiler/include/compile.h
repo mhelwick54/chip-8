@@ -30,6 +30,6 @@ word make_RND(FILE *fp);
 word make_DRW(FILE *fp);
 word make_SKP(FILE *fp);
 word make_SKNP(FILE *fp);
-void compile(FILE *fp);
+void compile(FILE *in, FILE *out);
 
 #endif //COMPILE_H
