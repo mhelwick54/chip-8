@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
 		printf("couldn't open file\n");
 		return -1;
 	}
-	FILE *out = fopen(argv[2], "w");
+	FILE *out = fopen(argv[2], "wb");
 	if(!out) {
 		printf("couldn't open file\n");
 		return -1;
@@ -29,6 +29,9 @@ int main(int argc, char *argv[]) {
 	compile(in, out);
 
 	printf("success.\n");
+
+	fclose(in);
+	fclose(out);
 
 	return 0;
 }

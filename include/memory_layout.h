@@ -49,13 +49,26 @@ extern byte *memory;
 #define MEM_READ(addr) (*(memory + (addr)))
 #define MEM_WRITE(addr, val) (*(memory + (addr)) = (val))
 
-extern byte *stack;
+#define STACK_SIZE 	0x010
+#define STACK_BOT	0xea0
+#define STACK_TOP 	(STACK_BOT + STACK_SIZE)
+#define STACK_START 0xfe
 
-#define STACK_SIZE 0x40
-#define STACK_TOP (STACK_SIZE - 1)
-#define STACK_BOT 0x00
+#define UPPER_READ(addr) ((*(memory + (addr) + 1)) << 8)
+#define LOWER_READ(addr) (*(memory + (addr)))
 
-#define STACK_READ(addr) (*(stack + (addr)))
-#define STACK_WRITE(addr, val) (*(stack + (addr)) = (val))
+#define UPPER_WRITE(addr, val) (*(memory + (addr) + 1) = ((val) >> 8))
+#define LOWER_WRITE(addr, val) (*(memory + (addr)) = (val))
+
+#define STACK_READ(addr) (UPPER_READ(STACK_BOT + (addr) - 1) ^ LOWER_READ(STACK_BOT + (addr) - 1))
+//#define STACK_READ(addr) (((*(memory + STACK_BOT + (addr))) << 8) ^ (*(memory + STACK_BOT + (addr) - 1)))
+#define STACK_WRITE(addr, val) (UPPER_WRITE(STACK_BOT + (addr) - 1, (val)), LOWER_WRITE(STACK_BOT + (addr) - 1, (val)))
+//#define STACK_WRITE(addr, val) ((*(memory + STACK_BOT + (addr) - 1) = (val) & 0x00ff), (*(memory + STACK_BOT + (addr)) = ((val) & 0xff00) >> 8))
+
+#define FRAME_BUFF_SIZE 0x100
+#define FRAME_BUFF		0xf00
+
+#define FRAME_BUFF_READ(offset) (*(memory + FRAME_BUFF + (offset)))
+#define FRAME_BUFF_WRITE(offset, val) (*(memory + FRAME_BUFF + (offset)) = (val))
 
 #endif //MEM_LAYOUT_H

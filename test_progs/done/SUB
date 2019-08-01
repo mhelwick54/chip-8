@@ -1,0 +1,7 @@
+LD V0, 10
+LD V1, 8
+SUB V0, V1
+LD V2, 10
+LD V3, 12
+SUB V2, V3
+RET

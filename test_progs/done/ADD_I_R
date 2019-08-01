@@ -1,0 +1,4 @@
+LD V0, 10
+LD I, 208
+ADD I, V0
+RET

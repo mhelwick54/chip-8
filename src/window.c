@@ -56,12 +56,27 @@ void printBoxes() {
 	wvline(win, ACS_VLINE, DEBUG_H);
 	wmove(win, DEBUG_Y + DEBUG_H, DEBUG_X);
 	whline(win, ACS_HLINE, DEBUG_W);
+
+	//regiser box
+	mvwaddch(win, REG_Y - 1, REG_X - 1, ACS_ULCORNER);
+	mvwaddch(win, REG_Y - 1, REG_X + REG_W, ACS_URCORNER);
+	mvwaddch(win, REG_Y + REG_H, REG_X - 1, ACS_LLCORNER);
+	mvwaddch(win, REG_Y + REG_H, REG_X + REG_W, ACS_LRCORNER);
+	wmove(win, REG_Y, REG_X - 1);
+	wvline(win, ACS_VLINE, REG_H);
+	wmove(win, REG_Y - 1, REG_X );
+	whline(win, ACS_HLINE, REG_W);
+	wmove(win, REG_Y, REG_X + REG_W);
+	wvline(win, ACS_VLINE, REG_H);
+	wmove(win, REG_Y + REG_H, REG_X);
+	whline(win, ACS_HLINE, REG_W);
 }
 
 void refreshWins() {
 	wrefresh(display);
 	wrefresh(debug);
 	wrefresh(instructions);
+	wrefresh(regs);
 	touchwin(win);
 	wrefresh(win);
 }
@@ -72,12 +87,39 @@ void initWins() {
 	display = subwin(win, DISP_H, DISP_W, DISP_Y, DISP_X);
 	debug = subwin(win, DEBUG_H, DEBUG_W, DEBUG_Y, DEBUG_X);
 	instructions = subwin(win, INSTR_H, INSTR_W, INSTR_Y, INSTR_X);
+	regs = subwin(win, REG_H, REG_W, REG_Y, REG_X);
 
 	scrollok(debug, TRUE);
 	scrollok(instructions, TRUE);
 
 	printBoxes();
 
+	initRegs();
+
+	touchwin(win);
+	wrefresh(win);
+}
+
+void refreshInstr() {
+	wrefresh(instructions);
+	touchwin(win);
+	wrefresh(win);
+}
+
+void refreshDebug() {
+	wrefresh(debug);
+	touchwin(win);
+	wrefresh(win);
+}
+
+void refreshReg() {
+	wrefresh(regs);
+	touchwin(win);
+	wrefresh(win);
+}
+
+void refreshDisplay() {
+	wrefresh(display);
 	touchwin(win);
 	wrefresh(win);
 }

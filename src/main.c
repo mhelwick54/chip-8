@@ -15,6 +15,9 @@
 #include "window.h"
 #include "display.h"
 #include "debug.h"
+#include "instr_win.h"
+#include "reg_win.h"
+#include "instructions.h"
 
 const float CLOCK_SPEED = 500.0;
 const float CLOCK_PERIOD = ((1.0 * 1000.0)/ CLOCK_SPEED);
@@ -22,56 +25,67 @@ const int TIMER_PERIOD = (int)CLOCK_SPEED;
 
 //extern defs
 byte 	*memory;
-byte 	*stack;
 byte 	registers[18];
+word	address_reg;
 byte 	stack_pointer;
 word 	program_counter;
 byte 	sprites[DISPLAY_HEIGHT][DISPLAY_WIDTH];
-byte 	framebuffer[DISPLAY_HEIGHT * DISPLAY_WIDTH];
 WINDOW	*win;
 WINDOW	*display;
 WINDOW	*debug;
 WINDOW	*instructions;
+WINDOW	*regs;
 
 void startup();
 void shutdown();
 
-void execute();
+int load_program(char *file);
+int execute();
 
 void test_sprites();
 void test_collision();
 
-int main() {
+int main(int argc, char *argv[]) {
 	startup();
+
+	if(!load_program(argv[1])) {
+		return -1;
+	}
 
 	struct timespec start, end;
 	clock_gettime(CLOCK_MONOTONIC_RAW, &start);
 	uint64_t cycle = 0;
 	int timer_tick = 0;
 	char c;
+	int executing = 1;
 
-	while(1) {
+	printRegs();
+	refreshReg();
+	scanf("%c", &c);
+
+	while(executing != -2) {
 		clock_gettime(CLOCK_MONOTONIC_RAW, &end);
 		float delta = (float)(end.tv_sec - start.tv_sec) * 1000.0 + (float)(end.tv_nsec - start.tv_nsec) / 1000000.0;
 		if(cycle % TIMER_PERIOD == 0 && !timer_tick) {
-			if(DELAY_TIMER != 0) {
-				DELAY_TIMER--;
-				printf("%d\n", DELAY_TIMER);
+			if(DT != 0) {
+				DT--;
+				printf("%d\n", DT);
 			}
-			if(SOUND_TIMER != 0) {
-				SOUND_TIMER--;
+			if(ST != 0) {
+				ST--;
 			}
 			timer_tick = 1;
+			refreshDisplay();
 		}
-		if(delta >= CLOCK_PERIOD) {
+		//if(delta >= CLOCK_PERIOD) {
 			clock_gettime(CLOCK_MONOTONIC_RAW, &start);
 			timer_tick = 0;
 			cycle++;
 
-			execute();
+			executing = execute();
+			refreshDisplay();
 			scanf("%c", &c);
-			break;
-		}
+		//}
 	}
 
 	shutdown();
@@ -88,12 +102,8 @@ void startup() {
 	} else {
 		printf("success.\n");
 	}
-	stack = malloc(STACK_SIZE * BYTE_SIZE);
 	printf("initializing registers...\n");
-	PC = (word)DATA_OFFSET;
-	SP = STACK_TOP;
-	DELAY_TIMER = 0;
-	SOUND_TIMER = 0;
+	initRegisters();
 	printf("setting sprites...\n");
 	setSprites();
 	printf("ready\n");
@@ -101,19 +111,58 @@ void startup() {
 	displaySplash();
 	sleep(3);
 	clearDisplay();
+	printRegs();
 	refreshWins();
 }
 
 void shutdown() {
+	delwin(debug);
+	delwin(instructions);
+	delwin(display);
 	endwin();
 	printf("cleaning ram...\n");
 	free(memory);
 	printf("shutting down...\n");
 }
 
-void execute() {
+int load_program(char *file) {
+	FILE *fp = fopen(file, "rb");
+	if(!fp) {
+		return 0;
+	}
 
+	byte half_instr = 0;
+	word mem_offset = DATA_OFFSET;
+	char buff[24];
+	while(fread(&half_instr, sizeof(half_instr), 1, fp)) {
+		#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+			MEM_WRITE(mem_offset + 1, half_instr);
+			sprintf(buff, "0x%02x\n", half_instr);
+			setDebug(buff);
+			fread(&half_instr, sizeof(half_instr), 1, fp);
+			MEM_WRITE(mem_offset, half_instr);
+		#else
+			MEM_WRITE(mem_offset + 1, half_instr);
+			sprintf(buff, "0x%02x\n", half_instr);
+			setDebug(buff);
+			fread(&half_instr, sizeof(half_instr), 1, fp);
+			MEM_WRITE(mem_offset, half_instr);
+		#endif
+		sprintf(buff, "0x%02x\n", half_instr);
+		setDebug(buff);
+		refreshDebug();
+		mem_offset += 2;
+	}
+	return 1;
+}
+
+int execute() {
+	int ret = 1;
+	ret = interpret(MEM_READ(PC), MEM_READ(PC + 1));
 	INC_PC(PC);
+	printRegs();
+	refreshReg();
+	return ret;
 }
 
 void test_sprites() {

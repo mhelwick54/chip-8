@@ -24,15 +24,15 @@ else
 	LIB=-lcurses
 endif
 
-INC_DEPS=memory_layout.h registers.h sprites.h display.h window.h debug.h
+INC_DEPS=memory_layout.h registers.h sprites.h display.h window.h debug.h instr_win.h reg_win.h instructions.h
 TEST_DEPS=
 DEPS=$(patsubst %,$(IDIR)/%,$(INC_DEPS))
 DEPS=$(patsubst %,$(TDIR)/%,$(TEST_DEPS))
 
-_SRC=sprites.c display.c window.c debug.c main.c
+_SRC=sprites.c display.c window.c debug.c instr_win.c reg_win.c instructions.c registers.c main.c
 SRC=$(patsubst %,$(SDIR)/%,$(_SRC))
 
-_OBJ=sprites.o display.o window.o debug.o main.o
+_OBJ=sprites.o display.o window.o debug.o instr_win.o reg_win.o instructions.o registers.o main.o
 OBJ=$(patsubst %,$(ODIR)/%,$(_OBJ))
 
 all: $(ODIR)/$(TARGET)

@@ -33,7 +33,6 @@
 #define Y_UPPER 32
 
 extern byte sprites[DISPLAY_HEIGHT][DISPLAY_WIDTH];
-extern byte framebuffer[DISPLAY_HEIGHT * DISPLAY_WIDTH];
 
 void displaySplash();
 void setPixels(int x, int y, int height, word addr);

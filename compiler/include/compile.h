@@ -3,12 +3,12 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 
 #include "instructions.h"
 
 typedef uint8_t byte;
 typedef uint16_t word;
-
 
 word make_SYS(FILE *fp);
 word make_CLS(FILE *fp);

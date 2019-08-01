@@ -1,19 +1,5 @@
 #include "compile.h"
 
-int strcmp(char *s1, char *s2) {
-	char *ptr1 = s1, *ptr2 = s2;
-	while(*ptr1 != '\0' && *ptr1 == *ptr2) {
-		ptr1++;
-		ptr2++;
-	}
-
-	if(*ptr1 == '\0' && *ptr2 == '\0') {
-		return 0;
-	} else {
-		return 1;
-	}
-}
-
 word make_SYS(FILE *fp) {
 	word instr = SYS;
 	word ptr;
@@ -462,96 +448,8 @@ void compile(FILE *in, FILE *out) {
 	while(fscanf(in, "%s", buff) >= 0) {
 		word instr = match(buff, in);
 		if(instr) {
-			if((instr & 0x8000) >> 15 == 1) {
-				fprintf(out, "1");
-			} else {
-				fprintf(out, "0");
-			}
-			if((instr & 0x4000) >> 14 == 1) {
-				fprintf(out, "1");
-			} else {
-				fprintf(out, "0");
-			}
-			if((instr & 0x2000) >> 13 == 1) {
-				fprintf(out, "1");
-			} else {
-				fprintf(out, "0");
-			}
-			if((instr & 0x1000) >> 12 == 1) {
-				fprintf(out, "1");
-			} else {
-				fprintf(out, "0");
-			}
-
-			fprintf(out, " ");
-
-			if((instr & 0x0800) >> 11 == 1) {
-				fprintf(out, "1");
-			} else {
-				fprintf(out, "0");
-			}
-			if((instr & 0x0400) >> 10 == 1) {
-				fprintf(out, "1");
-			} else {
-				fprintf(out, "0");
-			}
-			if((instr & 0x0200) >> 9 == 1) {
-				fprintf(out, "1");
-			} else {
-				fprintf(out, "0");
-			}
-			if((instr & 0x0100) >> 8 == 1) {
-				fprintf(out, "1");
-			} else {
-				fprintf(out, "0");
-			}
-
-			fprintf(out, " ");
-
-			if((instr & 0x0080) >> 7 == 1) {
-				fprintf(out, "1");
-			} else {
-				fprintf(out, "0");
-			}
-			if((instr & 0x0040) >> 6 == 1) {
-				fprintf(out, "1");
-			} else {
-				fprintf(out, "0");
-			}
-			if((instr & 0x0020) >> 5 == 1) {
-				fprintf(out, "1");
-			} else {
-				fprintf(out, "0");
-			}
-			if((instr & 0x0010) >> 4 == 1) {
-				fprintf(out, "1");
-			} else {
-				fprintf(out, "0");
-			}
-
-			fprintf(out, " ");
-
-			if((instr & 0x0008) >> 3 == 1) {
-				fprintf(out, "1");
-			} else {
-				fprintf(out, "0");
-			}
-			if((instr & 0x0004) >> 2 == 1) {
-				fprintf(out, "1");
-			} else {
-				fprintf(out, "0");
-			}
-			if((instr & 0x0002) >> 1 == 1) {
-				fprintf(out, "1");
-			} else {
-				fprintf(out, "0");
-			}
-			if((instr & 0x0001) >> 0 == 1) {
-				fprintf(out, "1");
-			} else {
-				fprintf(out, "0");
-			}
-			fprintf(out, "\n");
+			printf("0x%04x\n", instr);
+			fwrite(&instr, sizeof(instr), 1, out);
 		}
 	}
 }

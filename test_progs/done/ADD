@@ -1,0 +1,7 @@
+LD V0, 10
+LD V1, 14
+ADD V0, V1
+LD V2, ff
+LD V3, 1
+ADD V2, V3
+RET

@@ -22,8 +22,11 @@ extern byte registers[18];
 #define VE (registers[0xe])
 #define VF (registers[0xf])
 
-#define DELAY_TIMER (registers[0x10])
-#define SOUND_TIMER (registers[0x11])
+#define DT (registers[0x10])
+#define ST (registers[0x11])
+
+extern word address_reg;
+#define I address_reg
 
 extern byte stack_pointer;
 #define SP stack_pointer
@@ -35,6 +38,9 @@ extern word program_counter;
 #define PC program_counter
 
 #define INC_PC(p) (p += 2)
+#define DEC_PC(p) (p -= 2)
 #define SET_PC(p, addr) (p = addr)
+
+void initRegisters();
 
 #endif //REGISTERS_H
