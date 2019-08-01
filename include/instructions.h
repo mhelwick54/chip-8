@@ -2,6 +2,14 @@
 #define INSTRUCTIONS_H
 
 #include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+
+#ifdef __APPLE__
+	#include <ncurses.h>
+#else
+	#include <curses.h>
+#endif
 
 #include "memory_layout.h"
 #include "window.h"

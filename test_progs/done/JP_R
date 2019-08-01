@@ -1,0 +1,11 @@
+CLS
+LD V0, 2
+LD V1, 0
+LD V3, 0
+JP V0, 20c
+LD V2, 8
+LD F, V2
+LD V2, 5
+LD F, V2
+DRW V0, V3, 5
+RET

@@ -23,7 +23,7 @@ word make_JP(FILE *fp) {
 	char c;
 	fseek(fp, 1, SEEK_CUR);
 	c = fgetc(fp);
-	if(c == 'V' || c == 'v') {	//relative JP, scan addr
+	if(c == 'V') {	//relative JP, scan addr
 		instr = JP_R;
 		fseek(fp, 2, SEEK_CUR);
 	} else {								//absolute JP, write addr back to
@@ -52,7 +52,7 @@ word make_SE(FILE *fp) {
 	instr = ((c - '0') << 8 & 0x0f00);
 	fseek(fp, 2, SEEK_CUR);
 	c = fgetc(fp);
-	if(c == 'V' || c == 'v') {
+	if(c == 'V') {
 		c = fgetc(fp);
 		instr = instr ^ (SE_R & 0xf00f);
 		return instr ^ (((c - '0') << 4) & 0x00f0);
@@ -75,7 +75,7 @@ word make_SNE(FILE *fp) {
 	instr = ((c - '0') << 8 & 0x0f00);
 	fseek(fp, 2, SEEK_CUR);
 	c = fgetc(fp);
-	if(c == 'V' || c == 'v') {
+	if(c == 'V') {
 		instr = instr ^ (SNE_R & 0xf00f);
 		c = fgetc(fp);
 		return instr ^ (((c - '0') << 4) & 0x00f0);
@@ -105,7 +105,7 @@ word make_LD(FILE *fp) {
 	byte b;
 	fseek(fp, 1, SEEK_CUR);
 	c = fgetc(fp);
-	if(c == 'V' || c == 'v') {
+	if(c == 'V') {
 		c = fgetc(fp);
 		instr = (((c - '0') << 8) & 0x0f00);
 		fseek(fp, 2, SEEK_CUR);
@@ -117,18 +117,7 @@ word make_LD(FILE *fp) {
 					return instr ^ (((c - '0') << 4) & 0x00f0);
 				}
 				break;
-			case 'v': { //LD Vx, Vy - LD_R
-					instr = instr ^ (LD_R & 0xf00f);
-					c = fgetc(fp);
-					return instr ^ (((c - '0') << 4) & 0x00f0);
-				}
-				break;
 			case 'D': { //LD Vx, DT - LD_DT_I
-					fseek(fp, 1, SEEK_CUR);
-					return instr ^ (LD_DT_I & 0xf0ff);
-				}
-				break;
-			case 'd': { //LD Vx, DT - LD_DT_I
 					fseek(fp, 1, SEEK_CUR);
 					return instr ^ (LD_DT_I & 0xf0ff);
 				}
@@ -138,13 +127,8 @@ word make_LD(FILE *fp) {
 					return instr ^ (LD_K & 0xf0ff);
 				}
 				break;
-			case 'k': { //LD Vx, K - LD_K
-					fseek(fp, 1, SEEK_CUR);
-					return instr ^ (LD_K & 0xf0ff);
-				}
-				break;
 			case '[': { //LD Vx, [I] - LD_A_I
-					fseek(fp, 1, SEEK_CUR);
+					fseek(fp, 3, SEEK_CUR);
 					return instr ^ (LD_A_I & 0xf0ff);
 				}
 				break;
@@ -164,21 +148,7 @@ word make_LD(FILE *fp) {
 					return instr ^ (addr & 0x0fff);
 				}
 				break;
-			case 'i': { //LD I, addr - LD_I
-					fseek(fp, 2, SEEK_CUR);
-					instr = LD_I;
-					fscanf(fp, "%hx", &addr);
-					return instr ^ (addr & 0x0fff);
-				}
-				break;
 			case 'D': { //LD DT, Vx - LD_DT_O
-					fseek(fp, 4, SEEK_CUR);
-					instr = LD_DT_O;
-					c = fgetc(fp);
-					return instr ^ (((c - '0') << 8) & 0x0f00);
-				}
-				break;
-			case 'd': { //LD DT, Vx - LD_DT_O
 					fseek(fp, 4, SEEK_CUR);
 					instr = LD_DT_O;
 					c = fgetc(fp);
@@ -192,13 +162,6 @@ word make_LD(FILE *fp) {
 					return instr ^ (((c - '0') << 8) & 0x0f00);
 				}
 				break;
-			case 's': { //LD ST, Vx - LD_ST
-					fseek(fp, 4, SEEK_CUR);
-					instr = LD_ST;
-					c = fgetc(fp);
-					return instr ^ (((c - '0') << 8) & 0x0f00);
-				}
-				break;
 			case 'F': { //LD F, Vx - LD_S
 					fseek(fp, 3, SEEK_CUR);
 					instr = LD_S;
@@ -206,21 +169,7 @@ word make_LD(FILE *fp) {
 					return instr ^ (((c - '0') << 8) & 0x0f00);
 				}
 				break;
-			case 'f': { //LD F, Vx - LD_S
-					fseek(fp, 3, SEEK_CUR);
-					instr = LD_S;
-					c = fgetc(fp);
-					return instr ^ (((c - '0') << 8) & 0x0f00);
-				}
-				break;
 			case 'B': { //LD B, Vx - LD_BCD
-					fseek(fp, 3, SEEK_CUR);
-					instr = LD_BCD;
-					c = fgetc(fp);
-					return instr ^ (((c - '0') << 8) & 0x0f00);
-				}
-				break;
-			case 'b': { //LD B, Vx - LD_BCD
 					fseek(fp, 3, SEEK_CUR);
 					instr = LD_BCD;
 					c = fgetc(fp);
@@ -248,7 +197,7 @@ word make_ADD(FILE *fp) {
 	char c;
 	fseek(fp, 1, SEEK_CUR);
 	c = fgetc(fp);
-	if(c == 'I' || c == 'i') {
+	if(c == 'I') {
 		instr = ADD_I_R;
 		fseek(fp, 3, SEEK_CUR);
 		c = fgetc(fp);
@@ -258,7 +207,7 @@ word make_ADD(FILE *fp) {
 		instr = (((c - '0') << 8) & 0x0f00);
 		fseek(fp, 2, SEEK_CUR);
 		c = fgetc(fp);
-		if(c == 'V' || c == 'v') {
+		if(c == 'V') {
 			instr = instr ^ (ADD & 0xf00f);
 			c = fgetc(fp);
 			return instr ^ (((c - '0') << 4) & 0x00f0);
@@ -444,10 +393,11 @@ word match(char *buff, FILE *fp) {
 }
 
 void compile(FILE *in, FILE *out) {
+	printf("\n");
 	char buff[8];
 	while(fscanf(in, "%s", buff) >= 0) {
 		word instr = match(buff, in);
-		if(instr) {
+		if(instr >= 0) {
 			printf("0x%04x\n", instr);
 			fwrite(&instr, sizeof(instr), 1, out);
 		}

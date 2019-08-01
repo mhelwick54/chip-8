@@ -1,0 +1,6 @@
+LD V0, ff
+LD V1, ff
+XOR V0, V1
+LD V2, 00
+XOR V1, V2
+RET

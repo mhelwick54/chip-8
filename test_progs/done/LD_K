@@ -1,0 +1,4 @@
+LD V0, 10
+LD V0, K
+CLS
+RET

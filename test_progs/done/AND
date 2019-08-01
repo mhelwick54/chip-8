@@ -1,0 +1,7 @@
+LD V0, ff
+LD V1, ff
+AND V0, V1
+LD V2, 55
+LD V3, 46
+AND V2, V3
+RET

@@ -1,0 +1,12 @@
+LD V0, ff
+LD V3, ff
+LD V1, 0
+LD V2, 0
+LD I, 0
+SNE V0, V3
+DRW V1, V2, 5
+LD I, 5
+LD V3, 00
+SNE V0, V3
+DRW V1, V2, 5
+RET

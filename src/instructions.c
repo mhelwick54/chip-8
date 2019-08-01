@@ -89,7 +89,8 @@ int doJP(word instr) {
 	setInstr(buff);
 	refreshInstr();
 
-	SET_PC(PC, instr);
+	SET_PC(PC, (instr & 0x0fff));
+	DEC_PC(PC);
 
 	return JP;
 }
@@ -180,6 +181,8 @@ int doLD_R(word instr) {
 	setInstr(buff);
 	refreshInstr();
 
+	registers[((instr & 0x0f00) >> 8)] = registers[((instr & 0x00f0) >> 4)];
+
 	return LD_R;
 }
 
@@ -188,6 +191,8 @@ int doOR(word instr) {
 	sprintf(buff, "OR V%d, V%d\n", (instr & 0x0f00) >> 8, (instr & 0x00f0) >> 4);
 	setInstr(buff);
 	refreshInstr();
+
+	registers[((instr & 0x0f00) >> 8)] = registers[((instr & 0x0f00) >> 8)] | registers[((instr & 0x00f0) >> 4)];
 
 	return OR;
 }
@@ -198,6 +203,8 @@ int doAND(word instr) {
 	setInstr(buff);
 	refreshInstr();
 
+	registers[((instr & 0x0f00) >> 8)] = registers[((instr & 0x0f00) >> 8)] & registers[((instr & 0x00f0) >> 4)];
+
 	return AND;
 }
 
@@ -206,6 +213,8 @@ int doXOR(word instr) {
 	sprintf(buff, "XOR V%d, V%d\n", (instr & 0x0f00) >> 8, (instr & 0x00f0) >> 4);
 	setInstr(buff);
 	refreshInstr();
+
+	registers[((instr & 0x0f00) >> 8)] = registers[((instr & 0x0f00) >> 8)] ^ registers[((instr & 0x00f0) >> 4)];
 
 	return XOR;
 }
@@ -249,6 +258,9 @@ int doSHR(word instr) {
 	setInstr(buff);
 	refreshInstr();
 
+	VF = registers[((instr & 0x0f00) >> 8)] & 0x01;
+	registers[((instr & 0x0f00) >> 8)] = registers[((instr & 0x0f00) >> 8)] >> 1;
+
 	return SHR;
 }
 
@@ -257,6 +269,13 @@ int doSUBN(word instr) {
 	sprintf(buff, "SUBN V%d, V%d\n", (instr & 0x0f00) >> 8, (instr & 0x00f0) >> 4);
 	setInstr(buff);
 	refreshInstr();
+
+	if(registers[((instr & 0x00f0) >> 4)] > registers[((instr & 0x0f00) >> 8)]) {
+		VF = 0x1;
+	} else {
+		VF = 0x0;
+	}
+	registers[((instr & 0x0f00) >> 8)] = registers[((instr & 0x00f0) >> 4)] - registers[((instr & 0x0f00) >> 8)];
 
 	return SUBN;
 }
@@ -267,6 +286,9 @@ int doSHL(word instr) {
 	setInstr(buff);
 	refreshInstr();
 
+	VF = (registers[((instr & 0x0f00) >> 8)] & 0x80) >> 7;
+	registers[((instr & 0x0f00) >> 8)] = registers[((instr & 0x0f00) >> 8)] << 1;
+
 	return SHL;
 }
 
@@ -275,6 +297,10 @@ int doSNE_R(word instr) {
 	sprintf(buff, "SNE V%d, V%d\n", (instr & 0x0f00) >> 8, (instr & 0x00f0) >> 4);
 	setInstr(buff);
 	refreshInstr();
+
+	if(registers[((instr & 0x0f00) >> 8)] != registers[((instr & 0x00f0) >> 4)]) {
+		INC_PC(PC);
+	}
 
 	return SNE_R;
 }
@@ -296,6 +322,9 @@ int doJP_R(word instr) {
 	setInstr(buff);
 	refreshInstr();
 
+	SET_PC(PC, (V0 + (instr & 0x0fff)));
+	DEC_PC(PC);
+
 	return JP_R;
 }
 
@@ -304,6 +333,13 @@ int doRND(word instr) {
 	sprintf(buff, "RND V%d, 0x%02x\n", (instr & 0x0f00) >> 8, (instr & 0x00ff));
 	setInstr(buff);
 	refreshInstr();
+
+	srand(time(NULL));
+	byte r = rand() % 255;
+	sprintf(buff, "random: 0x%02x\n", r);
+	setDebug(buff);
+	refreshDebug();
+	registers[((instr & 0x0f00) >> 8)] = r & (instr & 0x00ff);
 
 	return RND;
 }
@@ -326,6 +362,16 @@ int doSKP(word instr) {
 	setInstr(buff);
 	refreshInstr();
 
+	halfdelay(1);
+	int temp = wgetch(display);
+	sprintf(buff, "pressed: %d\n", temp);
+	setDebug(buff);
+	refreshDebug();
+	if(temp == registers[((instr & 0x0f00) >> 8)]) {
+		INC_PC(PC);
+	}
+	nodelay(display, FALSE);
+
 	return SKP;
 }
 
@@ -334,6 +380,16 @@ int doSKNP(word instr) {
 	sprintf(buff, "SKNP V%d\n", (instr & 0x0f00) >> 8);
 	setInstr(buff);
 	refreshInstr();
+
+	halfdelay(1);
+	int temp = wgetch(display);
+	sprintf(buff, "pressed: %d\n", temp);
+	setDebug(buff);
+	refreshDebug();
+	if(temp != registers[((instr & 0x0f00) >> 8)]) {
+		INC_PC(PC);
+	}
+	nodelay(display, FALSE);
 
 	return SKNP;
 }
@@ -344,6 +400,8 @@ int doLD_DT_I(word instr) {
 	setInstr(buff);
 	refreshInstr();
 
+	registers[((instr & 0x0f00) >> 8)] = DT;
+
 	return LD_DT_I;
 }
 
@@ -352,6 +410,9 @@ int doLD_K(word instr) {
 	sprintf(buff, "LD V%d, K\n", (instr & 0x0f00) >> 8);
 	setInstr(buff);
 	refreshInstr();
+
+	word temp = wgetch(display);
+	registers[((instr & 0x0f00) >> 8)] = temp;
 
 	return LD_K;
 }
@@ -362,6 +423,8 @@ int doLD_DT_O(word instr) {
 	setInstr(buff);
 	refreshInstr();
 
+	DT = registers[((instr & 0x0f00) >> 8)];
+
 	return LD_DT_O;
 }
 
@@ -370,6 +433,8 @@ int doLD_ST(word instr) {
 	sprintf(buff, "LD ST, V%d\n", (instr & 0x0f00) >> 8);
 	setInstr(buff);
 	refreshInstr();
+
+	ST = registers[((instr & 0x0f00) >> 8)];
 
 	return LD_ST;
 }
@@ -391,6 +456,8 @@ int doLD_S(word instr) {
 	setInstr(buff);
 	refreshInstr();
 
+	I = RESERVED_OFFSET + (registers[((instr & 0x0f00) >> 8)] * 5);
+
 	return LD_S;
 }
 
@@ -399,6 +466,17 @@ int doLD_BCD(word instr) {
 	sprintf(buff, "LD B, V%d\n", (instr & 0x0f00) >> 8);
 	setInstr(buff);
 	refreshInstr();
+
+	byte num = registers[((instr & 0x0f00) >> 8)];
+	byte ones = num % 10;
+	num /= 10;
+	byte tens = num % 10;
+	num /= 10;
+	byte hundreds = num;
+
+	MEM_WRITE(I, hundreds);
+	MEM_WRITE(I + 1, tens);
+	MEM_WRITE(I + 2, ones);
 
 	return LD_BCD;
 }
@@ -409,6 +487,12 @@ int doLD_A_O(word instr) {
 	setInstr(buff);
 	refreshInstr();
 
+	int i = 0;
+	while(i <= ((instr & 0x0f00) >> 8)) {
+		MEM_WRITE(I + i, registers[i]);
+		++i;
+	}
+
 	return LD_A_O;
 }
 
@@ -417,6 +501,12 @@ int doLD_A_I(word instr) {
 	sprintf(buff, "LD V%d, [I]\n", (instr & 0x0f00) >> 8);
 	setInstr(buff);
 	refreshInstr();
+
+	int i = 0;
+	while(i <= ((instr & 0x0f00) >> 8)) {
+		registers[i] = MEM_READ(I + i);
+		++i;
+	}
 
 	return LD_A_I;
 }

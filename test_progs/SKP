@@ -1,0 +1,11 @@
+LD V0, K
+LD V1, 0
+LD V2, 0
+LD V3, 8
+LD F, V3
+SKP V0
+DRW V1, V2, 5
+LD V3, a
+LD F, V3
+DRW V1, V2, 5
+RET

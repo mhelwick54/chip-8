@@ -1,0 +1,5 @@
+LD V0, 10
+LD DT, V0
+CLS
+LD V0, DT
+RET

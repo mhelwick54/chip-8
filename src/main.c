@@ -18,6 +18,7 @@
 #include "instr_win.h"
 #include "reg_win.h"
 #include "instructions.h"
+#include "keys.h"
 
 const float CLOCK_SPEED = 500.0;
 const float CLOCK_PERIOD = ((1.0 * 1000.0)/ CLOCK_SPEED);
@@ -35,6 +36,7 @@ WINDOW	*display;
 WINDOW	*debug;
 WINDOW	*instructions;
 WINDOW	*regs;
+int		keys[16];
 
 void startup();
 void shutdown();
@@ -55,7 +57,7 @@ int main(int argc, char *argv[]) {
 	struct timespec start, end;
 	clock_gettime(CLOCK_MONOTONIC_RAW, &start);
 	uint64_t cycle = 0;
-	int timer_tick = 0;
+	//int timer_tick = 0;
 	char c;
 	int executing = 1;
 
@@ -64,9 +66,10 @@ int main(int argc, char *argv[]) {
 	scanf("%c", &c);
 
 	while(executing != -2) {
+
 		clock_gettime(CLOCK_MONOTONIC_RAW, &end);
-		float delta = (float)(end.tv_sec - start.tv_sec) * 1000.0 + (float)(end.tv_nsec - start.tv_nsec) / 1000000.0;
-		if(cycle % TIMER_PERIOD == 0 && !timer_tick) {
+		//float delta = (float)(end.tv_sec - start.tv_sec) * 1000.0 + (float)(end.tv_nsec - start.tv_nsec) / 1000000.0;
+		/*if(cycle % TIMER_PERIOD == 0 && !timer_tick) {
 			if(DT != 0) {
 				DT--;
 				printf("%d\n", DT);
@@ -76,18 +79,25 @@ int main(int argc, char *argv[]) {
 			}
 			timer_tick = 1;
 			refreshDisplay();
-		}
+		}*/
 		//if(delta >= CLOCK_PERIOD) {
 			clock_gettime(CLOCK_MONOTONIC_RAW, &start);
-			timer_tick = 0;
+			//timer_tick = 0;
 			cycle++;
 
 			executing = execute();
 			refreshDisplay();
-			scanf("%c", &c);
+			if(DT > 0) {
+				DT--;
+			}
+			if(ST > 0) {
+				ST--;
+			}
+			//scanf("%c", &c);
 		//}
 	}
 
+	scanf("%c", &c);
 	shutdown();
 	return 0;
 }

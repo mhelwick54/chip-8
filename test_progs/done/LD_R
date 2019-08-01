@@ -1,0 +1,4 @@
+LD V0, 10
+LD V1, 20
+LD V0, V1
+RET

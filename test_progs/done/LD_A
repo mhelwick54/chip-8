@@ -1,0 +1,10 @@
+LD V0, 10
+LD V1, 15
+LD V2, 20
+LD I, 500
+LD [I], V2
+LD V0, 0
+LD V1, 0
+LD V2, 0
+LD V2, [I]
+RET

@@ -1,0 +1,4 @@
+RND V0, ff
+RND V1, 00
+RND V2, 66
+RET

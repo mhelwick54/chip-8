@@ -1,0 +1,12 @@
+LD V0, 5
+LD V1, a
+LD V2, 0
+LD V3, 0
+LD V4, 10
+LD V5, 10
+LD F, V0
+DRW V2, V3, 5
+LD F, V1
+DRW V4, V5, 5
+CLS
+RET

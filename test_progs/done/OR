@@ -1,0 +1,9 @@
+LD V0, ff
+LD V1, 00
+OR V0, V1
+LD V2, 00
+OR V1, V2
+LD V3, ff
+LD V4, ff
+OR V3, V4
+RET

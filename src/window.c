@@ -92,6 +92,9 @@ void initWins() {
 	scrollok(debug, TRUE);
 	scrollok(instructions, TRUE);
 
+	noecho();
+	cbreak();
+
 	printBoxes();
 
 	initRegs();

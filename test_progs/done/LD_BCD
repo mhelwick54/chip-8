@@ -1,0 +1,5 @@
+LD V0, da
+LD I, 500
+LD B, V0
+LD V2, [I]
+RET
