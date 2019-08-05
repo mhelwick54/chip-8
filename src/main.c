@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
 			if(ST > 0) {
 				ST--;
 			}
-			scanf("%c", &c);
+			//scanf("%c", &c);
 		//}
 	}
 

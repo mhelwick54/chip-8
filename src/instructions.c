@@ -357,6 +357,9 @@ int doDRW(word instr) {
 	setPixels(registers[((instr & 0x0f00) >> 8)], registers[((instr & 0x00f0) >> 4)], (instr & 0x000f), I);
 	setDisplay();
 
+	char c;
+	scanf("%c", &c);
+
 	return DRW;
 }
 

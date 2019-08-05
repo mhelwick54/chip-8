@@ -46,6 +46,7 @@ int main(int argc, char *argv[]) {
 int load_program(char *file) {
 	FILE *fp = fopen(file, "rb");
 	if(!fp) {
+		printf("failed to open file\n");
 		return 0;
 	}
 

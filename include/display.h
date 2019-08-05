@@ -13,6 +13,7 @@
 #include "registers.h"
 #include "sprites.h"
 #include "window.h"
+#include "debug.h"
 
 #define PIXEL_WIDTH 64
 #define PIXEL_HEIGHT 32
