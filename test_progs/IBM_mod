@@ -1,0 +1,45 @@
+CLS
+LD I, 0x022a
+LD V0, 0x0c
+LD V1, 0x08
+DRW V0, V1, 0x08
+ADD V0, 0x09
+LD I, 0x0239
+DRW V0, V1, 0x08
+LD I, 0x0248
+ADD V0, 0x08
+DRW V0, V1, 0x08
+ADD V0, 0x04
+LD I, 0x0257
+DRW V0, V1, 0x08
+ADD V0, 0x08
+LD I, 0x0266
+DRW V0, V1, 0x08
+ADD V0, 0x08
+LD I, 0x0275
+DRW V0, V1, 0x08
+RET
+ffff
+3c3c
+3c3c
+ffff
+ffff
+383f
+3f38
+ffff
+80e0
+e0e8
+80e0
+e080
+f8fc
+3e3f
+3b39
+f8f8
+0307
+0fbf
+fbf3
+e343
+e0e0
+8080
+8080
+e0e0
