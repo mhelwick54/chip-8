@@ -32,8 +32,9 @@ extern int keys[16];
 #define KEYPAD_E 102
 #define KEYPAD_F 118
 
-int keyPressed(int key);
-void pressKey(int key);
-void releaseKey(int key);
+int 	keyPressed(int key);
+void 	pressKey(int key);
+void 	releaseKey(int key);
+void 	resetKeys();
 
 #endif //KEY_H

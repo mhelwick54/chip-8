@@ -9,6 +9,7 @@
 	#include <curses.h>
 #endif
 
+#include "endian.h"
 #include "memory_layout.h"
 #include "registers.h"
 #include "sprites.h"
@@ -25,6 +26,7 @@ const float CLOCK_PERIOD = ((1.0 * 1000.0)/ CLOCK_SPEED);
 const int TIMER_PERIOD = (int)CLOCK_SPEED;
 
 //extern defs
+int		endian;
 byte 	*memory;
 byte 	registers[18];
 word	address_reg;
@@ -41,14 +43,21 @@ int		keys[16];
 void startup();
 void shutdown();
 
-int load_program(char *file);
-int execute();
+int 	load_program(char *file);
+int 	execute();
+void 	getKeys();
 
 void test_sprites();
 void test_collision();
 
 int main(int argc, char *argv[]) {
 	startup();
+
+	if(argv[2][3] == 'l') {
+		endian = BIN_LITTLE_ENDIAN;
+	} else {
+		endian = BIN_BIG_ENDIAN;
+	}
 
 	if(!load_program(argv[1])) {
 		return -1;
@@ -66,7 +75,6 @@ int main(int argc, char *argv[]) {
 	scanf("%c", &c);
 
 	while(executing != -2) {
-
 		clock_gettime(CLOCK_MONOTONIC_RAW, &end);
 		//float delta = (float)(end.tv_sec - start.tv_sec) * 1000.0 + (float)(end.tv_nsec - start.tv_nsec) / 1000000.0;
 		/*if(cycle % TIMER_PERIOD == 0 && !timer_tick) {
@@ -85,6 +93,7 @@ int main(int argc, char *argv[]) {
 			//timer_tick = 0;
 			cycle++;
 
+			getKeys();
 			executing = execute();
 			refreshDisplay();
 			if(DT > 0) {
@@ -93,7 +102,7 @@ int main(int argc, char *argv[]) {
 			if(ST > 0) {
 				ST--;
 			}
-			//scanf("%c", &c);
+			scanf("%c", &c);
 		//}
 	}
 
@@ -145,19 +154,22 @@ int load_program(char *file) {
 	word mem_offset = DATA_OFFSET;
 	char buff[24];
 	while(fread(&half_instr, sizeof(half_instr), 1, fp)) {
-		#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+		//#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+		if(endian == BIN_LITTLE_ENDIAN) {
+			MEM_WRITE(mem_offset, half_instr);
+			sprintf(buff, "0x%02x\n", half_instr);
+			setDebug(buff);
+			fread(&half_instr, sizeof(half_instr), 1, fp);
+			MEM_WRITE(mem_offset + 1, half_instr);
+		//#else
+		} else {
 			MEM_WRITE(mem_offset + 1, half_instr);
 			sprintf(buff, "0x%02x\n", half_instr);
 			setDebug(buff);
 			fread(&half_instr, sizeof(half_instr), 1, fp);
 			MEM_WRITE(mem_offset, half_instr);
-		#else
-			MEM_WRITE(mem_offset + 1, half_instr);
-			sprintf(buff, "0x%02x\n", half_instr);
-			setDebug(buff);
-			fread(&half_instr, sizeof(half_instr), 1, fp);
-			MEM_WRITE(mem_offset, half_instr);
-		#endif
+		//#endif
+		}
 		sprintf(buff, "0x%02x\n", half_instr);
 		setDebug(buff);
 		refreshDebug();
@@ -173,6 +185,15 @@ int execute() {
 	printRegs();
 	refreshReg();
 	return ret;
+}
+
+void getKeys() {
+	resetKeys();
+	wtimeout(display, 0);
+	int temp = 1;
+	while((temp = wgetch(display)) > 0) {
+		pressKey(temp);
+	}
 }
 
 void test_sprites() {

@@ -32,4 +32,6 @@ word make_SKP(FILE *fp);
 word make_SKNP(FILE *fp);
 void compile(FILE *in, FILE *out);
 
+word atow(char *buff);
+
 #endif //COMPILE_H

@@ -11,11 +11,13 @@
 	#include <curses.h>
 #endif
 
+#include "endian.h"
 #include "memory_layout.h"
 #include "window.h"
 #include "instr_win.h"
 #include "debug.h"
 #include "display.h"
+#include "keys.h"
 
 #define SYS		0x0000
 #define CLS		0x00e0

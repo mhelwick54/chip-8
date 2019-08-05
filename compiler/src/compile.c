@@ -388,7 +388,7 @@ word match(char *buff, FILE *fp) {
 	} else if(!strcmp(buff, "SKNP")) {
 		return make_SKNP(fp);
 	} else {
-		return 0;
+		return atow(buff);
 	}
 }
 
@@ -402,4 +402,24 @@ void compile(FILE *in, FILE *out) {
 			fwrite(&instr, sizeof(instr), 1, out);
 		}
 	}
+}
+
+word atow(char *buff) {
+	word w = 0;
+	char *ptr = buff;
+	while(*ptr != '\0') {
+		w *= 16;
+		if(*ptr >= '0' && *ptr <= '9') {
+			w += *ptr - '0';
+		} else {
+			if(*ptr >= 'a' && *ptr <= 'f') {
+				w += *ptr - 'a' + 10;
+			} else {
+				w += *ptr - 'A' + 10;
+			}
+		}
+		ptr++;
+	}
+
+	return w;
 }

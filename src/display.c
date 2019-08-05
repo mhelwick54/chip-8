@@ -83,7 +83,7 @@ void setDisplay() {
 	for(i = 0; i < DISPLAY_HEIGHT * DISPLAY_WIDTH; ++i) {
 		for(shift = BYTE_SIZE - 1; shift >= 0; --shift) {
 			if((FRAME_BUFF_READ(i) & (0x1 << shift)) != 0) {
-				waddch(display, '*');
+				waddch(display, ACS_CKBOARD);
 			} else {
 				waddch(display, ' ');
 			}

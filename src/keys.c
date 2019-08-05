@@ -63,3 +63,22 @@ void releaseKey(int key) {
 		case KEYPAD_F: { keys[15] = 0; } break;
 	}
 }
+
+void resetKeys() {
+	releaseKey(KEYPAD_0);
+	releaseKey(KEYPAD_1);
+	releaseKey(KEYPAD_2);
+	releaseKey(KEYPAD_3);
+	releaseKey(KEYPAD_4);
+	releaseKey(KEYPAD_5);
+	releaseKey(KEYPAD_6);
+	releaseKey(KEYPAD_7);
+	releaseKey(KEYPAD_8);
+	releaseKey(KEYPAD_9);
+	releaseKey(KEYPAD_A);
+	releaseKey(KEYPAD_B);
+	releaseKey(KEYPAD_C);
+	releaseKey(KEYPAD_D);
+	releaseKey(KEYPAD_E);
+	releaseKey(KEYPAD_F);
+}

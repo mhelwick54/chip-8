@@ -89,6 +89,10 @@ int doJP(word instr) {
 	setInstr(buff);
 	refreshInstr();
 
+	if((instr & 0x0fff) == PC) {
+		return doRET(instr);
+	}
+
 	SET_PC(PC, (instr & 0x0fff));
 	DEC_PC(PC);
 
@@ -362,15 +366,9 @@ int doSKP(word instr) {
 	setInstr(buff);
 	refreshInstr();
 
-	halfdelay(1);
-	int temp = wgetch(display);
-	sprintf(buff, "pressed: %d\n", temp);
-	setDebug(buff);
-	refreshDebug();
-	if(temp == registers[((instr & 0x0f00) >> 8)]) {
+	if(keyPressed(registers[((instr & 0x0f00) >> 8)])) {
 		INC_PC(PC);
 	}
-	nodelay(display, FALSE);
 
 	return SKP;
 }
@@ -381,15 +379,9 @@ int doSKNP(word instr) {
 	setInstr(buff);
 	refreshInstr();
 
-	halfdelay(1);
-	int temp = wgetch(display);
-	sprintf(buff, "pressed: %d\n", temp);
-	setDebug(buff);
-	refreshDebug();
-	if(temp != registers[((instr & 0x0f00) >> 8)]) {
+	if(!keyPressed(registers[((instr & 0x0f00) >> 8)])) {
 		INC_PC(PC);
 	}
-	nodelay(display, FALSE);
 
 	return SKNP;
 }
@@ -512,16 +504,20 @@ int doLD_A_I(word instr) {
 }
 
 int interpret(byte upper, byte lower) {
-	#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-		word instr = lower;
+	word instr = 0;
+	//#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+	//if(endian == BIN_LITTLE_ENDIAN) {
+	//	instr = lower << 8;
+	//	instr = instr ^ (upper & 0x00ff);
+	//} else {
+	//#else
+		instr = lower;
 		instr = instr ^ ((upper << 8) & 0xff00);
-	#else
-		word instr = lower << 8;
-		instr = instr ^ (upper & 0x00ff);
-	#endif
+	//}
+	//#endif
 	char buff[24];
-	sprintf(buff, "0x%02x 0x%02x\n", lower, upper);
-	setDebug(buff);
+	//sprintf(buff, "0x%02x 0x%02x\n", lower, upper);
+	//setDebug(buff);
 	sprintf(buff, "0x%04x\n", instr);
 	setDebug(buff);
 	refreshDebug();
