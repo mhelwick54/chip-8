@@ -21,13 +21,6 @@
 #include "instructions.h"
 #include "keys.h"
 
-const float CLOCK_SPEED = 500.0;
-float CLOCK_PERIOD = ((1.0 * 1000.0)/ CLOCK_SPEED);
-
-//clock ticks 500 times/sec
-//timer ticks 60 times/sec
-//timer ticks 1 time/8.33 clock ticks
-
 //extern defs
 int		endian;
 byte 	*memory;
@@ -54,6 +47,9 @@ void test_sprites();
 void test_collision();
 
 int main(int argc, char *argv[]) {
+	float CLOCK_SPEED = 500.0;
+	float CLOCK_PERIOD = ((1.0 * 1000.0)/ CLOCK_SPEED);
+
 	startup();
 
 	if(argv[2][3] == 'l') {
@@ -107,6 +103,7 @@ int main(int argc, char *argv[]) {
 			//scanf("%c", &c);
 		}
 	}
+	refreshWins();
 
 	scanf("%c", &c);
 	shutdown();
