@@ -23,7 +23,10 @@
 
 const float CLOCK_SPEED = 500.0;
 const float CLOCK_PERIOD = ((1.0 * 1000.0)/ CLOCK_SPEED);
-const int TIMER_PERIOD = (int)CLOCK_SPEED;
+
+//clock ticks 500 times/sec
+//timer ticks 60 times/sec
+//timer ticks 1 time/8.33 clock ticks
 
 //extern defs
 int		endian;
@@ -66,7 +69,7 @@ int main(int argc, char *argv[]) {
 	struct timespec start, end;
 	clock_gettime(CLOCK_MONOTONIC_RAW, &start);
 	uint64_t cycle = 0;
-	//int timer_tick = 0;
+	int timer_tick = 0;
 	char c;
 	int executing = 1;
 
@@ -76,34 +79,33 @@ int main(int argc, char *argv[]) {
 
 	while(executing != -2) {
 		clock_gettime(CLOCK_MONOTONIC_RAW, &end);
-		//float delta = (float)(end.tv_sec - start.tv_sec) * 1000.0 + (float)(end.tv_nsec - start.tv_nsec) / 1000000.0;
-		/*if(cycle % TIMER_PERIOD == 0 && !timer_tick) {
+		float delta = (float)(end.tv_sec - start.tv_sec) * 1000.0 + (float)(end.tv_nsec - start.tv_nsec) / 1000000.0;
+		if(cycle > (CLOCK_SPEED / 60) && !timer_tick) {
 			if(DT != 0) {
 				DT--;
-				printf("%d\n", DT);
 			}
 			if(ST != 0) {
 				ST--;
 			}
 			timer_tick = 1;
+			cycle = 0;
 			refreshDisplay();
-		}*/
-		//if(delta >= CLOCK_PERIOD) {
+		}
+		if(delta >= CLOCK_PERIOD) {
+			getKeys();
 			clock_gettime(CLOCK_MONOTONIC_RAW, &start);
-			//timer_tick = 0;
+			timer_tick = 0;
 			cycle++;
 
-			getKeys();
 			executing = execute();
-			refreshDisplay();
 			if(DT > 0) {
 				DT--;
 			}
 			if(ST > 0) {
 				ST--;
 			}
-			scanf("%c", &c);
-		//}
+			//scanf("%c", &c);
+		}
 	}
 
 	scanf("%c", &c);
@@ -154,21 +156,18 @@ int load_program(char *file) {
 	word mem_offset = DATA_OFFSET;
 	char buff[24];
 	while(fread(&half_instr, sizeof(half_instr), 1, fp)) {
-		//#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 		if(endian == BIN_LITTLE_ENDIAN) {
 			MEM_WRITE(mem_offset, half_instr);
 			sprintf(buff, "0x%02x\n", half_instr);
 			setDebug(buff);
 			fread(&half_instr, sizeof(half_instr), 1, fp);
 			MEM_WRITE(mem_offset + 1, half_instr);
-		//#else
 		} else {
 			MEM_WRITE(mem_offset + 1, half_instr);
 			sprintf(buff, "0x%02x\n", half_instr);
 			setDebug(buff);
 			fread(&half_instr, sizeof(half_instr), 1, fp);
 			MEM_WRITE(mem_offset, half_instr);
-		//#endif
 		}
 		sprintf(buff, "0x%02x\n", half_instr);
 		setDebug(buff);
@@ -189,9 +188,17 @@ int execute() {
 
 void getKeys() {
 	resetKeys();
-	wtimeout(display, 0);
-	int temp = 1;
-	while((temp = wgetch(display)) > 0) {
+	wtimeout(debug, 0);
+	int temp = -1;
+	while(1) {
+		temp = wgetch(debug);
+		char buff[32];
+		sprintf(buff, "key pressed %d\n", temp);
+		setDebug(buff);
+		refreshDebug();
+		if(temp == -1) {
+			return;
+		}
 		pressKey(temp);
 	}
 }
