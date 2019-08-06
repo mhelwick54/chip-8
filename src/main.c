@@ -22,7 +22,7 @@
 #include "keys.h"
 
 const float CLOCK_SPEED = 500.0;
-const float CLOCK_PERIOD = ((1.0 * 1000.0)/ CLOCK_SPEED);
+float CLOCK_PERIOD = ((1.0 * 1000.0)/ CLOCK_SPEED);
 
 //clock ticks 500 times/sec
 //timer ticks 60 times/sec
