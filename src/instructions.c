@@ -357,9 +357,6 @@ int doDRW(word instr) {
 	setPixels(registers[((instr & 0x0f00) >> 8)], registers[((instr & 0x00f0) >> 4)], (instr & 0x000f), I);
 	setDisplay();
 
-	char c;
-	scanf("%c", &c);
-
 	return DRW;
 }
 
@@ -508,22 +505,12 @@ int doLD_A_I(word instr) {
 
 int interpret(byte upper, byte lower) {
 	word instr = 0;
-	//#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-	//if(endian == BIN_LITTLE_ENDIAN) {
-	//	instr = lower << 8;
-	//	instr = instr ^ (upper & 0x00ff);
-	//} else {
-	//#else
-		instr = lower;
-		instr = instr ^ ((upper << 8) & 0xff00);
-	//}
-	//#endif
+	instr = lower;
+	instr = instr ^ ((upper << 8) & 0xff00);
 	char buff[24];
-	//sprintf(buff, "0x%02x 0x%02x\n", lower, upper);
-	//setDebug(buff);
 	sprintf(buff, "0x%04x\n", instr);
-	setDebug(buff);
-	refreshDebug();
+	//setDebug(buff);
+	//refreshDebug();
 	switch(instr & 0xf000) {
 		case 0x0000: {
 			return zeroes(instr & 0x0fff);

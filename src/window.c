@@ -105,24 +105,16 @@ void initWins() {
 
 void refreshInstr() {
 	wrefresh(instructions);
-	touchwin(win);
-	wrefresh(win);
 }
 
 void refreshDebug() {
 	wrefresh(debug);
-	touchwin(win);
-	wrefresh(win);
 }
 
 void refreshReg() {
 	wrefresh(regs);
-	touchwin(win);
-	wrefresh(win);
 }
 
 void refreshDisplay() {
 	wrefresh(display);
-	touchwin(win);
-	wrefresh(win);
 }

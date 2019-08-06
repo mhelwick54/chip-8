@@ -32,12 +32,11 @@ void setPixels(int x, int y, int height, word addr) {
 			start_row -= Y_UPPER * BYTE_SIZE;
 		}
 		byte mask = 0x1 << (BYTE_SIZE - x_offset - 1);
-		//printf("%d %d\n", x, x_offset);
 		while(mask != 0) {
-			sprintf(buff, "(first) writing pixel (0x%02x << 0x%02x, %d)\n", x / BYTE_SIZE, mask, y + i);
-			setDebug(buff);
-			refreshDebug();
 			byte sprite_line = MEM_READ(addr + i);
+			//sprintf(buff, "(first) x=%d y=%d byte=%d mask=0x%02x x_offset=%d sprite=0x%02x\n", x, y + i, x / BYTE_SIZE, mask, x_offset, sprite_line);
+			//setDebug(buff);
+			//refreshDebug();
 
 			byte offset = start_row + (i * BYTE_SIZE) + (x / BYTE_SIZE);
 			byte readfrom = FRAME_BUFF_READ(offset);
@@ -50,7 +49,6 @@ void setPixels(int x, int y, int height, word addr) {
 				VF = 0x01;
 			}
 			mask = mask >> 1;
-			//scanf("%c", &c);
 		}
 		if(x_offset != 0 && mask != 1) {
 			x -= BYTE_SIZE;
@@ -59,17 +57,15 @@ void setPixels(int x, int y, int height, word addr) {
 			}
 			x_offset = BYTE_SIZE - x_offset;
 			mask = 0x1 << (BYTE_SIZE - x_offset - 1);
-			//printf("%d %d\n", x, x_offset);
 			while(mask != 0) {
-				sprintf(buff, "(second) writing pixel (0x%02x << 0x%02x, %d)\n", (x + 1) / BYTE_SIZE, mask, y + i);
-				setDebug(buff);
-				refreshDebug();
 				byte sprite_line = MEM_READ(addr + i);
+				//sprintf(buff, "(second) x=%d y=%d byte=%d mask=0x%02x x_offset=%d sprite=0x%02x\n", x, y + i, x / BYTE_SIZE, mask, x_offset, sprite_line);
+				//setDebug(buff);
+				//refreshDebug();
 
 				byte offset = start_row + (i * BYTE_SIZE) + (x / BYTE_SIZE);
 				byte readfrom = FRAME_BUFF_READ(offset);
 				byte collision = readfrom & mask;
-				offset = start_row + (i * BYTE_SIZE) + ((x + 1) / BYTE_SIZE);
 				readfrom = FRAME_BUFF_READ(offset);
 				byte towrite = readfrom ^ (sprite_line >> x_offset & mask);
 				FRAME_BUFF_WRITE(offset, towrite);
@@ -79,7 +75,6 @@ void setPixels(int x, int y, int height, word addr) {
 					VF = 0x01;
 				}
 				mask = mask >> 1;
-				//scanf("%c", &c);
 			}
 		}
 	}
