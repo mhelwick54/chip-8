@@ -21,7 +21,7 @@ ifeq ($(UNAME_S), Darwin)
 else
 	CC=gcc#GNU gcc
 	CXX=gcc
-	LIB=-lcurses
+	LIB=-lcurses -lrt
 endif
 
 INC_DEPS=memory_layout.h registers.h sprites.h display.h window.h debug.h instr_win.h reg_win.h instructions.h keys.h c8_endian.h
