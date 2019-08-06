@@ -24,7 +24,7 @@ else
 	LIB=-lcurses
 endif
 
-INC_DEPS=memory_layout.h registers.h sprites.h display.h window.h debug.h instr_win.h reg_win.h instructions.h keys.h
+INC_DEPS=memory_layout.h registers.h sprites.h display.h window.h debug.h instr_win.h reg_win.h instructions.h keys.h c8_endian.h
 TEST_DEPS=
 DEPS=$(patsubst %,$(IDIR)/%,$(INC_DEPS))
 DEPS=$(patsubst %,$(TDIR)/%,$(TEST_DEPS))

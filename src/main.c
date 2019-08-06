@@ -9,7 +9,7 @@
 	#include <curses.h>
 #endif
 
-#include "endian.h"
+#include "c8_endian.h"
 #include "memory_layout.h"
 #include "registers.h"
 #include "sprites.h"
