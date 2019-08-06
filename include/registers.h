@@ -40,6 +40,19 @@
 └────────────────────────────────┘
  */
 
+/*******************************************************************************
+ *	Chip-8 has 16 1-byte registers for general use, although conventionally the
+ *	VF register is reserved for indicating carries and the like. See
+ *	http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#3.0 for a reference of
+ *	instructions that set VF.
+ *	There is also a register I that is one word long. It is used for addressing
+ *	memory locations in instructions like DRW.
+ *	Two timers, delay timer (DT) and sound timer (ST) that tick down at 60Hz.
+ *	Stack pointer that is only a byte, since it addresses within the 16-byte
+ *	stack only.
+ *	Program counter that is one word, points to the current instruction address.
+ ******************************************************************************/
+
 extern byte registers[18];
 
 #define V0 (registers[0x0])

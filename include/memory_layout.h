@@ -3,6 +3,19 @@
 
 #include <stdint.h>
 
+/*******************************************************************************
+ *	Chip-8 is designed with 4096 bytes of ROM/RAM. The bottom 512 bytes is
+ *	reserved for Chip-8 system data, currently just the hex font set found in
+ *	[0x000-0x100]. Programs get loaded in starting at [0x200]. The stack starts
+ *	at [0xea0], and is 16 bytes long, providing 16 levels of function calls
+ *	(as per Chip-8 specifications, the stack is only used to store the return
+ *	address when calling a function, and is not technically user-accessible).
+ *	Above that is the frame buffer, at [0xf00-0xfff].
+ *
+ *	The byte type is defined as 8 bits, and the word type is two bytes. The
+ *	memory is made up of an array of 4096 bytes.
+ ******************************************************************************/
+
 /*
 +---------------+= 0xFFF (4095) End of Chip-8 RAM
 |               |

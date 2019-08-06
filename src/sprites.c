@@ -12,6 +12,14 @@ void setSprite(word sprite, int bytes, ...) {
 	va_end(args);
 }
 
+/*******************************************************************************
+ *	Loads the sprites for a 5-byte hex font into memory starting at 0x000. Can
+ *	add extra sprites here for system fonts or images, or load them with a
+ *	program.
+ *
+ *	setSprite uses the address, the number of bytes, and a corresponding list of
+ *	the bytes as hex ints.
+ ******************************************************************************/
 void setSprites() {
 	setSprite(SPRITE_HEX_0, 5, 0xf0, 0x90, 0x90, 0x90, 0xf0);
 	setSprite(SPRITE_HEX_1, 5, 0x20, 0x60, 0x20, 0x20, 0x70);
@@ -61,6 +69,7 @@ void setSprites() {
 	setSprite(SPRITE_SPLASH_DASH, 5, 0x00, 0x00, 0xf8, 0x00, 0x00);
 	setSprite(SPRITE_SPLASH_8, 5, 0xf8, 0x88, 0xf8, 0x88, 0xf8);
 
+	//3-byte sprite font, not currently used or loaded into memory
 	/*setSprite(SPRITE_AT, 3, 0x46, 0x3E, 0x56);
 	setSprite(SPRITE_A, 3, 0x99, 0x9F, 0x4F);
 	setSprite(SPRITE_B, 3, 0x5F, 0x57, 0x4F);
@@ -127,6 +136,10 @@ void setSprites() {
 	setSprite(SPRITE_QUE, 3, 0x88, 0x1F, 0x4F);*/
 }
 
+/*******************************************************************************
+ *	Finds a single line of a sprite and prints it.
+ *	Now defunct, was used in initial testing.
+ ******************************************************************************/
 void printAtAddr(word addr) {
 	byte line = MEM_READ(addr);
 	switch(line) {
@@ -152,6 +165,10 @@ void printAtAddr(word addr) {
 	}
 }
 
+/*******************************************************************************
+ *	Prints a 5-byte sprite.
+ *	Now defunct, was used in initial testing.
+ ******************************************************************************/
 void printFromAddr(word sprite) {
 	printAtAddr(sprite);
 	printf("\n");
@@ -164,6 +181,10 @@ void printFromAddr(word sprite) {
 	printAtAddr(sprite + 4);
 }
 
+/*******************************************************************************
+ *	Prints a sprite based on the char input.
+ *	Now defunct, was used in initial testing.
+ ******************************************************************************/
 void printSprite(char c) {
 	switch(c) {
 		case '0': printFromAddr(SPRITE_HEX_0);

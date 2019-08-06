@@ -1,5 +1,12 @@
 #include "reg_win.h"
 
+/*******************************************************************************
+ *	Don't ask how long this took, I don't want to think about it.
+ *
+ *	initRegs prints the basic format with all the labels.
+ *	printRegs updates the values as the program runs.
+ *	300 lines of the same three fuctions over and over...
+ ******************************************************************************/
 void initRegs() {
 	wmove(regs, 1, 2);
 	waddstr(regs, "Registers");

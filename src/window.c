@@ -1,5 +1,10 @@
 #include "window.h"
 
+/*******************************************************************************
+ *	Not exactly pretty code, but it does the job.
+ *	Manually prints boxes around each window. Most of the constants are defines
+ *	for coordinates in the stdscr, or curses characters.
+ ******************************************************************************/
 void printBoxes() {
 	//outer box
 	mvwaddch(win, WIN_Y, WIN_X, ACS_ULCORNER);
@@ -81,6 +86,12 @@ void refreshWins() {
 	wrefresh(win);
 }
 
+/*******************************************************************************
+ *	Creates the various windows and subwindows.
+ *	Sets debug and instructions to be scrollable, and all to not echo input to
+ *	the window (noecho) and to take input as soon as it is available instead of
+ *	waiting for a newline (cbreak);
+ ******************************************************************************/
 void initWins() {
 	initscr();
 	win = newwin(WIN_H, WIN_W, 0, 0);

@@ -50,6 +50,11 @@
 
 void initRegs();
 void printRegs();
+
+/*******************************************************************************
+ *	A bunch of coordinates. Look at the picture above, it's easier even if you
+ *	have to count.
+ ******************************************************************************/
 #define VF_X 2
 #define VF_Y 3
 #define VE_X VF_X
