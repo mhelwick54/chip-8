@@ -74,4 +74,8 @@ http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#3.0
 A few notes:
 * The `SYS` instruction does nothing in this implementation.
 * The keyboard is currently non-functional, so `SKP` and `SKNP` do nothing.
-	However, `LD Vx, K` does seem to work to some extent. 
+	However, `LD Vx, K` does seem to work to some extent.
+
+## Bugs or Feature Requests
+Please open an issue for any bugs you come across, or any features you think
+should be added.
