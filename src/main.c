@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
 
 	printRegs();
 	refreshReg();
-	scanf("%c", &c);
+	//scanf("%c", &c);
 
 	while(executing != -2) {
 		clock_gettime(CLOCK_MONOTONIC_RAW, &end);

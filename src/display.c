@@ -12,8 +12,7 @@ void displaySplash() {
 }
 
 void setPixels(int x, int y, int height, word addr) {
-	char buff[64];
-	char c;
+	//char buff[64];
 	VF = 0;
 	int start_row = (y * BYTE_SIZE);
 	int x_offset = x % BYTE_SIZE;
