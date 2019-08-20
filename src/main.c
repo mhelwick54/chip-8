@@ -76,6 +76,7 @@ int main(int argc, char *argv[]) {
 	scanf("%c", &c);
 
 	while(executing != -2) {
+		getKeys();
 		clock_gettime(CLOCK_MONOTONIC_RAW, &end);
 		float delta = (float)(end.tv_sec - start.tv_sec) * 1000.0 + (float)(end.tv_nsec - start.tv_nsec) / 1000000.0;
 		if(cycle > (CLOCK_SPEED / 60) && !timer_tick) {
@@ -90,7 +91,6 @@ int main(int argc, char *argv[]) {
 			refreshDisplay();
 		}
 		if(delta >= CLOCK_PERIOD) {
-			getKeys();
 			clock_gettime(CLOCK_MONOTONIC_RAW, &start);
 			timer_tick = 0;
 			cycle++;
@@ -103,6 +103,7 @@ int main(int argc, char *argv[]) {
 				ST--;
 			}
 			//scanf("%c", &c);
+			resetKeys();
 		}
 	}
 	refreshWins();
@@ -188,7 +189,7 @@ int execute() {
 }
 
 void getKeys() {
-	resetKeys();
+	//resetKeys();
 	while(kbhit()) {
 		int c;
 		c = kb_getch();
@@ -197,7 +198,7 @@ void getKeys() {
 		setDebug(buff);
 		refreshDebug();
 		if(c == 27) {	//esc
-			tty_reset();
+			shutdown();
 			exit(1);
 		}
 		pressKey(c);
