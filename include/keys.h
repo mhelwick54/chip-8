@@ -19,6 +19,8 @@
 #include <termios.h>
 #include <string.h>
 
+#include <linux/input.h>
+
 #include "window.h"
 #include "debug.h"
 
@@ -47,6 +49,9 @@ void 	tty_reset();
 void 	tty_set();
 int 	kbhit();
 int 	kb_getch();
+
+void 	getKey(int key, char *keymap);
+void 	getKeys();
 
 int 	keyPressed(int key);
 void 	pressKey(int key);

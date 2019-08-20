@@ -42,7 +42,7 @@ void shutdown();
 
 int 	load_program(char *file);
 int 	execute();
-void 	getKeys();
+void 	setKeys();
 
 void test_sprites();
 void test_collision();
@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
 			refreshDisplay();
 		}
 		if(delta >= CLOCK_PERIOD) {
-			getKeys();
+			setKeys();
 			clock_gettime(CLOCK_MONOTONIC_RAW, &start);
 			timer_tick = 0;
 			cycle++;
@@ -187,9 +187,9 @@ int execute() {
 	return ret;
 }
 
-void getKeys() {
-	resetKeys();
-	while(kbhit()) {
+void setKeys() {
+//	resetKeys();
+/*	while(kbhit()) {
 		int c;
 		c = kb_getch();
 		char buff[32];
@@ -197,11 +197,13 @@ void getKeys() {
 		setDebug(buff);
 		refreshDebug();
 		if(c == 27) {	//esc
-			tty_reset();
+			shutdown();
 			exit(1);
 		}
 		pressKey(c);
-	}
+	}*/
+
+	getKeys();
 }
 
 void test_sprites() {

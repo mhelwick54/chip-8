@@ -31,6 +31,40 @@ int kb_getch() {
 	}
 }
 
+void getKey(int key, char *keymap) {
+	int key_byte = keymap[key / 8];
+	int mask = 1 << (key % 8);
+	if(key_byte & mask) {
+		pressKey(key);
+	} else {
+		releaseKey(key);
+	}
+}
+
+void getKeys() {
+	FILE *kb = fopen("/dev/input/by-path/platform-i8042-serio-0-event-kbd", "r");
+	char keymap[KEY_MAX/8 + 1];
+	memset(keymap, 0, sizeof(keymap));
+	ioctl(fileno(kb), EVIOCGKEY(sizeof(keymap)), keymap);
+
+	getKey(KEYPAD_0, keymap);
+	getKey(KEYPAD_1, keymap);
+	getKey(KEYPAD_2, keymap);
+	getKey(KEYPAD_3, keymap);
+	getKey(KEYPAD_4, keymap);
+	getKey(KEYPAD_5, keymap);
+	getKey(KEYPAD_6, keymap);
+	getKey(KEYPAD_7, keymap);
+	getKey(KEYPAD_8, keymap);
+	getKey(KEYPAD_9, keymap);
+	getKey(KEYPAD_A, keymap);
+	getKey(KEYPAD_B, keymap);
+	getKey(KEYPAD_C, keymap);
+	getKey(KEYPAD_D, keymap);
+	getKey(KEYPAD_E, keymap);
+	getKey(KEYPAD_F, keymap);
+}
+
 int keyPressed(int key) {
 	switch(key) {
 		case KEYPAD_0: { return keys[0]; } break;
