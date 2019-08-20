@@ -232,112 +232,112 @@ void printRegs() {
 	}
 
 	//keys
-	if(keys[KEYPAD_0]) {
+	if(keyPressed(KEYPAD_0)) {
 		mvwaddch(regs, KEY_0_Y, KEY_0_X - 1, ACS_CKBOARD);
 		mvwaddch(regs, KEY_0_Y, KEY_0_X + 1, ACS_CKBOARD);
 	} else {
 		mvwaddch(regs, KEY_0_Y, KEY_0_X - 1, ' ');
 		mvwaddch(regs, KEY_0_Y, KEY_0_X + 1, ' ');
 	}
-	if(keys[KEYPAD_1]) {
+	if(keyPressed(KEYPAD_1)) {
 		mvwaddch(regs, KEY_1_Y, KEY_1_X - 1, ACS_CKBOARD);
 		mvwaddch(regs, KEY_1_Y, KEY_1_X + 1, ACS_CKBOARD);
 	} else {
 		mvwaddch(regs, KEY_1_Y, KEY_1_X - 1, ' ');
 		mvwaddch(regs, KEY_1_Y, KEY_1_X + 1, ' ');
 	}
-	if(keys[KEYPAD_2]) {
+	if(keyPressed(KEYPAD_2)) {
 		mvwaddch(regs, KEY_2_Y, KEY_2_X - 1, ACS_CKBOARD);
 		mvwaddch(regs, KEY_2_Y, KEY_2_X + 1, ACS_CKBOARD);
 	} else {
 		mvwaddch(regs, KEY_2_Y, KEY_2_X - 1, ' ');
 		mvwaddch(regs, KEY_2_Y, KEY_2_X + 1, ' ');
 	}
-	if(keys[KEYPAD_3]) {
+	if(keyPressed(KEYPAD_3)) {
 		mvwaddch(regs, KEY_3_Y, KEY_3_X - 1, ACS_CKBOARD);
 		mvwaddch(regs, KEY_3_Y, KEY_3_X + 1, ACS_CKBOARD);
 	} else {
 		mvwaddch(regs, KEY_3_Y, KEY_3_X - 1, ' ');
 		mvwaddch(regs, KEY_3_Y, KEY_3_X + 1, ' ');
 	}
-	if(keys[KEYPAD_4]) {
+	if(keyPressed(KEYPAD_4)) {
 		mvwaddch(regs, KEY_4_Y, KEY_4_X - 1, ACS_CKBOARD);
 		mvwaddch(regs, KEY_4_Y, KEY_4_X + 1, ACS_CKBOARD);
 	} else {
 		mvwaddch(regs, KEY_4_Y, KEY_4_X - 1, ' ');
 		mvwaddch(regs, KEY_4_Y, KEY_4_X + 1, ' ');
 	}
-	if(keys[KEYPAD_5]) {
+	if(keyPressed(KEYPAD_5)) {
 		mvwaddch(regs, KEY_5_Y, KEY_5_X - 1, ACS_CKBOARD);
 		mvwaddch(regs, KEY_5_Y, KEY_5_X + 1, ACS_CKBOARD);
 	} else {
 		mvwaddch(regs, KEY_5_Y, KEY_5_X - 1, ' ');
 		mvwaddch(regs, KEY_5_Y, KEY_5_X + 1, ' ');
 	}
-	if(keys[KEYPAD_6]) {
+	if(keyPressed(KEYPAD_6)) {
 		mvwaddch(regs, KEY_6_Y, KEY_6_X - 1, ACS_CKBOARD);
 		mvwaddch(regs, KEY_6_Y, KEY_6_X + 1, ACS_CKBOARD);
 	} else {
 		mvwaddch(regs, KEY_6_Y, KEY_6_X - 1, ' ');
 		mvwaddch(regs, KEY_6_Y, KEY_6_X + 1, ' ');
 	}
-	if(keys[KEYPAD_7]) {
+	if(keyPressed(KEYPAD_7)) {
 		mvwaddch(regs, KEY_7_Y, KEY_7_X - 1, ACS_CKBOARD);
 		mvwaddch(regs, KEY_7_Y, KEY_7_X + 1, ACS_CKBOARD);
 	} else {
 		mvwaddch(regs, KEY_7_Y, KEY_7_X - 1, ' ');
 		mvwaddch(regs, KEY_7_Y, KEY_7_X + 1, ' ');
 	}
-	if(keys[KEYPAD_8]) {
+	if(keyPressed(KEYPAD_8)) {
 		mvwaddch(regs, KEY_8_Y, KEY_8_X - 1, ACS_CKBOARD);
 		mvwaddch(regs, KEY_8_Y, KEY_8_X + 1, ACS_CKBOARD);
 	} else {
 		mvwaddch(regs, KEY_8_Y, KEY_8_X - 1, ' ');
 		mvwaddch(regs, KEY_8_Y, KEY_8_X + 1, ' ');
 	}
-	if(keys[KEYPAD_9]) {
+	if(keyPressed(KEYPAD_9)) {
 		mvwaddch(regs, KEY_9_Y, KEY_9_X - 1, ACS_CKBOARD);
 		mvwaddch(regs, KEY_9_Y, KEY_9_X + 1, ACS_CKBOARD);
 	} else {
 		mvwaddch(regs, KEY_9_Y, KEY_9_X - 1, ' ');
 		mvwaddch(regs, KEY_9_Y, KEY_9_X + 1, ' ');
 	}
-	if(keys[KEYPAD_A]) {
+	if(keyPressed(KEYPAD_A)) {
 		mvwaddch(regs, KEY_A_Y, KEY_A_X - 1, ACS_CKBOARD);
 		mvwaddch(regs, KEY_A_Y, KEY_A_X + 1, ACS_CKBOARD);
 	} else {
 		mvwaddch(regs, KEY_A_Y, KEY_A_X - 1, ' ');
 		mvwaddch(regs, KEY_A_Y, KEY_A_X + 1, ' ');
 	}
-	if(keys[KEYPAD_B]) {
+	if(keyPressed(KEYPAD_B)) {
 		mvwaddch(regs, KEY_B_Y, KEY_B_X - 1, ACS_CKBOARD);
 		mvwaddch(regs, KEY_B_Y, KEY_B_X + 1, ACS_CKBOARD);
 	} else {
 		mvwaddch(regs, KEY_B_Y, KEY_B_X - 1, ' ');
 		mvwaddch(regs, KEY_B_Y, KEY_B_X + 1, ' ');
 	}
-	if(keys[KEYPAD_C]) {
+	if(keyPressed(KEYPAD_C)) {
 		mvwaddch(regs, KEY_C_Y, KEY_C_X - 1, ACS_CKBOARD);
 		mvwaddch(regs, KEY_C_Y, KEY_C_X + 1, ACS_CKBOARD);
 	} else {
 		mvwaddch(regs, KEY_C_Y, KEY_C_X - 1, ' ');
 		mvwaddch(regs, KEY_C_Y, KEY_C_X + 1, ' ');
 	}
-	if(keys[KEYPAD_D]) {
+	if(keyPressed(KEYPAD_D)) {
 		mvwaddch(regs, KEY_D_Y, KEY_D_X - 1, ACS_CKBOARD);
 		mvwaddch(regs, KEY_D_Y, KEY_D_X + 1, ACS_CKBOARD);
 	} else {
 		mvwaddch(regs, KEY_D_Y, KEY_D_X - 1, ' ');
 		mvwaddch(regs, KEY_D_Y, KEY_D_X + 1, ' ');
 	}
-	if(keys[KEYPAD_E]) {
+	if(keyPressed(KEYPAD_E)) {
 		mvwaddch(regs, KEY_E_Y, KEY_E_X - 1, ACS_CKBOARD);
 		mvwaddch(regs, KEY_E_Y, KEY_E_X + 1, ACS_CKBOARD);
 	} else {
 		mvwaddch(regs, KEY_E_Y, KEY_E_X - 1, ' ');
 		mvwaddch(regs, KEY_E_Y, KEY_E_X + 1, ' ');
 	}
-	if(keys[KEYPAD_F]) {
+	if(keyPressed(KEYPAD_F)) {
 		mvwaddch(regs, KEY_F_Y, KEY_F_X - 1, ACS_CKBOARD);
 		mvwaddch(regs, KEY_F_Y, KEY_F_X + 1, ACS_CKBOARD);
 	} else {

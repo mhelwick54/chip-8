@@ -42,7 +42,7 @@ $(ODIR)/$(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) $(OPT_LVL) $(LDFLAGS) $^ -o $@ $(LIB)
 
 $(ODIR)/%.o: $(SDIR)/%.c
-	$(CC) $(CFLAGS) $(LDFLAGS) $(OPT_LVL) -MMD -c $< -o $@ $(LIB)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OPT_LVL) -MMD -c $< -o $@
 
 .PHONY: clean
 

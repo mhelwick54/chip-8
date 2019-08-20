@@ -35,6 +35,7 @@ WINDOW	*debug;
 WINDOW	*instructions;
 WINDOW	*regs;
 int		keys[16];
+struct 	termios tty;
 
 void startup();
 void shutdown();
@@ -69,9 +70,10 @@ int main(int argc, char *argv[]) {
 	char c;
 	int executing = 1;
 
+	resetKeys();
 	printRegs();
 	refreshReg();
-	//scanf("%c", &c);
+	scanf("%c", &c);
 
 	while(executing != -2) {
 		clock_gettime(CLOCK_MONOTONIC_RAW, &end);
@@ -125,6 +127,7 @@ void startup() {
 	printf("setting sprites...\n");
 	setSprites();
 	printf("ready\n");
+	tty_set();
 	initWins();
 	displaySplash();
 	sleep(3);
@@ -141,6 +144,7 @@ void shutdown() {
 	printf("cleaning ram...\n");
 	free(memory);
 	printf("shutting down...\n");
+	tty_reset();
 }
 
 int load_program(char *file) {
@@ -156,19 +160,19 @@ int load_program(char *file) {
 		if(endian == BIN_LITTLE_ENDIAN) {
 			MEM_WRITE(mem_offset, half_instr);
 			sprintf(buff, "0x%02x\n", half_instr);
-			setDebug(buff);
+			//setDebug(buff);
 			fread(&half_instr, sizeof(half_instr), 1, fp);
 			MEM_WRITE(mem_offset + 1, half_instr);
 		} else {
 			MEM_WRITE(mem_offset + 1, half_instr);
 			sprintf(buff, "0x%02x\n", half_instr);
-			setDebug(buff);
+			//setDebug(buff);
 			fread(&half_instr, sizeof(half_instr), 1, fp);
 			MEM_WRITE(mem_offset, half_instr);
 		}
 		sprintf(buff, "0x%02x\n", half_instr);
-		setDebug(buff);
-		refreshDebug();
+		//setDebug(buff);
+		//refreshDebug();
 		mem_offset += 2;
 	}
 	return 1;
@@ -185,18 +189,18 @@ int execute() {
 
 void getKeys() {
 	resetKeys();
-	wtimeout(debug, 0);
-	int temp = -1;
-	while(1) {
-		temp = wgetch(debug);
+	while(kbhit()) {
+		int c;
+		c = kb_getch();
 		char buff[32];
-		sprintf(buff, "key pressed %d\n", temp);
+		sprintf(buff, "key pressed %d\n", c);
 		setDebug(buff);
 		refreshDebug();
-		if(temp == -1) {
-			return;
+		if(c == 27) {	//esc
+			tty_reset();
+			exit(1);
 		}
-		pressKey(temp);
+		pressKey(c);
 	}
 }
 

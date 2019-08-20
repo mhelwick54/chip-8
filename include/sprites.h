@@ -35,7 +35,7 @@
 
 #define FONT_OFFSET (SPRITE_SPLASH_8 + 0x5)
 
-void setSprite(word sprite, int bytes, ...);
+void setSprite(word sprite, int num_bytes, ...);
 void setSprites();
 void printAtAddr(word addr);
 void printFromAddr(word sprite);

@@ -13,7 +13,18 @@
  /	+---+---+---+---+	 /	+---+---+---+---+
  */
 
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/select.h>
+#include <termios.h>
+#include <string.h>
+
+#include "window.h"
+#include "debug.h"
+
 extern int keys[16];
+
+extern struct termios tty;
 
 #define KEYPAD_0 120
 #define KEYPAD_1 49
@@ -31,6 +42,11 @@ extern int keys[16];
 #define KEYPAD_D 114
 #define KEYPAD_E 102
 #define KEYPAD_F 118
+
+void 	tty_reset();
+void 	tty_set();
+int 	kbhit();
+int 	kb_getch();
 
 int 	keyPressed(int key);
 void 	pressKey(int key);

@@ -1,10 +1,10 @@
 #include "sprites.h"
 
-void setSprite(word sprite, int bytes, ...) {
+void setSprite(word sprite, int num_bytes, ...) {
 	va_list args;
-	va_start(args, bytes);
+	va_start(args, num_bytes);
 	int i = 0;
-	while(i < bytes) {
+	while(i < num_bytes) {
 		byte b = (byte)va_arg(args, int);
 		MEM_WRITE(sprite + i, b);
 		++i;

@@ -1,5 +1,36 @@
 #include "keys.h"
 
+void tty_reset() {
+	tcsetattr(0, TCSANOW, &tty);
+}
+
+void tty_set() {
+	struct termios nonblock_tty;
+	tcgetattr(0, &tty);
+	memcpy(&nonblock_tty, &tty, sizeof(nonblock_tty));
+	atexit(tty_reset);
+	cfmakeraw(&nonblock_tty);
+	tcsetattr(0, TCSANOW, &nonblock_tty);
+}
+
+int kbhit() {
+	struct timeval tv = { 0L, 0L };
+	fd_set fds;
+	FD_ZERO(&fds);
+	FD_SET(0, &fds);
+	return select(1, &fds, NULL, NULL, &tv);
+}
+
+int kb_getch() {
+	char c;
+	int err;
+	if((err = read(0, &c, sizeof(c))) < 0) {
+		return err;
+	} else {
+		return c;
+	}
+}
+
 int keyPressed(int key) {
 	switch(key) {
 		case KEYPAD_0: { return keys[0]; } break;
@@ -23,6 +54,10 @@ int keyPressed(int key) {
 }
 
 void pressKey(int key) {
+	char buff[32];
+	sprintf(buff, "key pressed %d\n", key);
+	setDebug(buff);
+	refreshDebug();
 	switch(key) {
 		case KEYPAD_0: { keys[0] = 1; } break;
 		case KEYPAD_1: { keys[1] = 1; } break;
@@ -44,6 +79,10 @@ void pressKey(int key) {
 }
 
 void releaseKey(int key) {
+	char buff[32];
+	sprintf(buff, "key released %d\n", key);
+	setDebug(buff);
+	refreshDebug();
 	switch(key) {
 		case KEYPAD_0: { keys[0] = 0; } break;
 		case KEYPAD_1: { keys[1] = 0; } break;
@@ -65,20 +104,24 @@ void releaseKey(int key) {
 }
 
 void resetKeys() {
-	releaseKey(KEYPAD_0);
-	releaseKey(KEYPAD_1);
-	releaseKey(KEYPAD_2);
-	releaseKey(KEYPAD_3);
-	releaseKey(KEYPAD_4);
-	releaseKey(KEYPAD_5);
-	releaseKey(KEYPAD_6);
-	releaseKey(KEYPAD_7);
-	releaseKey(KEYPAD_8);
-	releaseKey(KEYPAD_9);
-	releaseKey(KEYPAD_A);
-	releaseKey(KEYPAD_B);
-	releaseKey(KEYPAD_C);
-	releaseKey(KEYPAD_D);
-	releaseKey(KEYPAD_E);
-	releaseKey(KEYPAD_F);
+	char buff[32];
+	sprintf(buff, "resetting keys\n");
+	setDebug(buff);
+	refreshDebug();
+	keys[0] = 0;
+	keys[1] = 0;
+	keys[2] = 0;
+	keys[3] = 0;
+	keys[4] = 0;
+	keys[5] = 0;
+	keys[6] = 0;
+	keys[7] = 0;
+	keys[8] = 0;
+	keys[9] = 0;
+	keys[10] = 0;
+	keys[11] = 0;
+	keys[12] = 0;
+	keys[13] = 0;
+	keys[14] = 0;
+	keys[15] = 0;
 }
